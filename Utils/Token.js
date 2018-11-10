@@ -1,6 +1,6 @@
-const secret = process.env.SECRET_KEY;
+const secret = "mysecretkey";
 const jwt = require("jsonwebtoken");
-const createGravatarUrl = require("./createGravatar");
+
 
 function createToken(user) {
   let scope;
@@ -8,20 +8,18 @@ function createToken(user) {
   if (user.admin) {
     scope = "admin";
   }
-
+    console.log(JSON.stringify(user.expire));
   return jwt.sign(
     {
-      sub: user.id,
+      sub: user.token,
       username: user.username,
-      email: user.email,
       role: "admin",
-      gravatar: createGravatarUrl(user.username),
       scope
     },
     secret,
     {
       algorithm: "HS256",
-      expiresIn: "1h"
+      expiresIn: JSON.stringify(user.expire)
     }
   );
 }

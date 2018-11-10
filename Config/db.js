@@ -8,14 +8,13 @@ const db = new sequelize({
   dialect: "mysql"
 });
 
-const ud = db.define("userdb", {
-  id: {
-    type: sequelize.DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+const ud = db.define("linkedindb", {
+    username: {
+    type: sequelize.DataTypes.STRING,
+    primaryKey: true
   },
-  username: sequelize.DataTypes.STRING,
-  pass: sequelize.DataTypes.STRING
+  token: sequelize.DataTypes.JSON,
+    expire:sequelize.DataTypes.INTEGER
 });
 
 

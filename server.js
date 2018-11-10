@@ -27,10 +27,10 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use((r, s, n) => {
-  console.log("in a mid", r.user);
-  n();
-});
+// app.use((r, s, n) => {
+//   // console.log("in a mid", r.user);
+//   n();
+// });
 
 app.use("/", routes);
 
