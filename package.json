@@ -27,7 +27,7 @@
     "passport-local": "^1.0.0",
     "request": "^2.88.0",
     "sequelize": "^4.28.6",
-    "socket.io": "^2.0.4",
+    "socket.io": "^2.1.1",
     "socketio-jwt": "^4.5.0"
   }
 }

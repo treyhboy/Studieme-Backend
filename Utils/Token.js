@@ -8,7 +8,8 @@ function createToken(user) {
   if (user.admin) {
     scope = "admin";
   }
-    console.log(JSON.stringify(user.expire));
+    console.log("expireee");
+    console.log(JSON.stringify(user.expire)+"s");
   return jwt.sign(
     {
       sub: user.token,
@@ -19,7 +20,7 @@ function createToken(user) {
     secret,
     {
       algorithm: "HS256",
-      expiresIn: JSON.stringify(user.expire)
+      expiresIn: (JSON.stringify(user.expire)+"s")
     }
   );
 }

@@ -8,7 +8,7 @@ const db = new sequelize({
   dialect: "mysql"
 });
 
-const ud = db.define("linkedindb", {
+const ud = db.define("test1211db", {
     username: {
     type: sequelize.DataTypes.STRING,
     primaryKey: true
