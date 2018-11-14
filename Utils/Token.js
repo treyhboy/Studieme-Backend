@@ -2,7 +2,7 @@ const secret = "mysecretkey";
 const jwt = require("jsonwebtoken");
 
 
-function createToken(user) {
+function createToken(user,name) {
   let scope;
 
   if (user.admin) {
@@ -14,6 +14,7 @@ function createToken(user) {
     {
       sub: user.token,
       username: user.username,
+        name:name,
       role: "admin",
       scope
     },

@@ -40,10 +40,10 @@ router.post("/data", function(req, res) {
 router.post("/verify", function(req, res) {
     var decoded = jwt.verify(req.body.token, 'mysecretkey');
     console.log(req.body)
-    console.log(decoded)
+    console.log(decoded.name)
     if(decoded)
     {
-        res.send({status:true})
+        res.send({status:true,name:decoded.name,username:decoded.username})
     }
     else
     {
@@ -52,7 +52,7 @@ router.post("/verify", function(req, res) {
 })
 router.post("/login", function(req, res) {
         request.post(
-            `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&code=${req.body.d}&redirect_uri=http://localhost:3001/linkedin&client_id=81k5i16hicsnq3&client_secret=GC3LNUuTqXoaqlHD`,
+            `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&code=${req.body.d}&redirect_uri=http://localhost:3000/linkedin&client_id=81k5i16hicsnq3&client_secret=GC3LNUuTqXoaqlHD`,
             function (error, response, body) {
                 console.log(JSON.parse(body).access_token)
                 var k = JSON.parse(body);
@@ -64,13 +64,15 @@ router.post("/login", function(req, res) {
                     function (error, response, body) {
                         console.log(k.access_token)
                         console.log(k.expires_in)
+                        console.log(JSON.parse(body).firstName + " " + JSON.parse(body).lastName)
                         console.log(JSON.parse(body).emailAddress)
                         var email = JSON.parse(body).emailAddress;
+                        var name = JSON.parse(body).firstName + " " + JSON.parse(body).lastName
                             ud
                             .findOne({ where: { username: email } })
                             .then(function(user) {
                                 if (user) {
-                                    res.send({status:false,message:"user exist",token:createToken(user)})
+                                    res.send({status:true,message:"user exist",token:createToken(user,name),data:JSON.parse(body),name})
                                 } else {
                                     ud
                                         .create({
@@ -84,7 +86,7 @@ router.post("/login", function(req, res) {
                                             // var t ={ token:createToken(user)}
                                             // var decoded = jwt.verify(t.token, 'mysecretkey');
                                             // console.log(decoded);
-                                            res.send({status:true,token:createToken(user),firstName:body.firstName,lastName:body.lastName,pictureUrl:body.pictureUrl,data:body});
+                                            res.send({status:true,token:createToken(user,name),name:name,pictureUrl:body.pictureUrl,data:JSON.parse(body)});
 
                                         })
                                         .catch(function(err) {

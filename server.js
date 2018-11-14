@@ -21,7 +21,11 @@ app.use(
 );
 
 app.use(cors());
-
+app.use(function(request, response, next) {
+    response.header("Access-Control-Allow-Origin", "*");
+    response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 app.use(bp.urlencoded({ extended: true }));
 app.use(bp.json());
 app.use(flash());
@@ -35,13 +39,14 @@ app.use(passport.session());
 // });
 
 app.use("/", routes);
-// io.on('connection', (socket) => {
-//     console.log("New client connected");
-//     console.log(socket.id);
-//     socket.on('some',(data) => {
-//         console.log(data);
-//     })
-// });
+io.on('connection', (socket) => {
+    console.log("New client connected");
+    console.log(socket.id);
+    socket.on('some',(data) => {
+        console.log(data);
+        io.emit('RECEIVE_MESSAGE', data)
+    })
+});
 
 server.listen(1234, function () {
   console.log("Server started on http://localhost:1234");
