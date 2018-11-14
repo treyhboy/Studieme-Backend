@@ -13,7 +13,7 @@ const ud = db.define("test1211db", {
     type: sequelize.DataTypes.STRING,
     primaryKey: true
   },
-  token: sequelize.DataTypes.JSON,
+    token: sequelize.DataTypes.JSON,
     expire:sequelize.DataTypes.INTEGER
 });
 

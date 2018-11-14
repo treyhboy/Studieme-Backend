@@ -83,9 +83,6 @@ router.post("/login", function(req, res) {
                                         .then(function(user) {
                                             console.log("user.dataValues->");
                                             console.log(user.dataValues);
-                                            // var t ={ token:createToken(user)}
-                                            // var decoded = jwt.verify(t.token, 'mysecretkey');
-                                            // console.log(decoded);
                                             res.send({status:true,token:createToken(user,name),name:name,pictureUrl:body.pictureUrl,data:JSON.parse(body)});
 
                                         })

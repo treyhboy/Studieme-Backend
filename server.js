@@ -2,13 +2,11 @@ require("dotenv").config();
 const express = require('express');
 const http = require('http');
 const bp = require('body-parser');
-const socketio = require('socket.io');
 const app = express();
 const server = http.Server(app);
-const io = socketio(server);
 const session = require("express-session");
 const cp = require("cookie-parser");
-const passport = require("./Config/Passport/Passport.js");
+// const passport = require("./Config/Passport/Passport.js");
 const cors = require("cors");
 const routes = require("./Src/Routes/Login");
 const flash = require("connect-flash");
@@ -30,8 +28,8 @@ app.use(bp.urlencoded({ extended: true }));
 app.use(bp.json());
 app.use(flash());
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // app.use((r, s, n) => {
 //   // console.log("in a mid", r.user);
@@ -39,14 +37,6 @@ app.use(passport.session());
 // });
 
 app.use("/", routes);
-io.on('connection', (socket) => {
-    console.log("New client connected");
-    console.log(socket.id);
-    socket.on('some',(data) => {
-        console.log(data);
-        io.emit('RECEIVE_MESSAGE', data)
-    })
-});
 
 server.listen(1234, function () {
   console.log("Server started on http://localhost:1234");
