@@ -6,13 +6,6 @@ const request = require('request');
 const ud = require("../../Config/db").ud;
 const jwt = require("jsonwebtoken");
 
-// router.post("/signup", passport.authenticate("local-signup"), function(req, res) {
-//   res.send({ token: createToken(req.user) });
-// });
-// router.post("/login", function(req, res) {
-//     var token = res.token;
-//   // res.send({ token: createToken(req.user) });
-// });
 router.post("/data", function(req, res) {
     var t = jwt.verify(req.token, 'mysecretkey');
     request.get(
@@ -37,6 +30,20 @@ router.post("/data", function(req, res) {
         }
     );
 });
+router.post("/api", function(req, res) {
+    console.log("req data")
+    var k = JSON.stringify(req.body.data);
+    console.log(k)
+    request.post({
+            url: 'http://127.0.0.1:5000/data',
+            body:{data: k},
+            json: true
+        },
+        function (error, response, body) {
+            console.log(body);
+            res.send({success:true,data:body})
+        })
+})
 router.post("/verify", function(req, res) {
     var decoded = jwt.verify(req.body.token, 'mysecretkey');
     console.log(req.body)
@@ -91,7 +98,6 @@ router.post("/login", function(req, res) {
                                         });
                                 }
                             })
-
                     }
                 );
             }
