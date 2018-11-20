@@ -13,8 +13,18 @@ const ud = db.define("test1211db", {
     type: sequelize.DataTypes.STRING,
     primaryKey: true
   },
-  token: sequelize.DataTypes.JSON,
+    token: sequelize.DataTypes.JSON,
     expire:sequelize.DataTypes.INTEGER
+});
+const chats =  db.define('Li1chats',{
+    id:{
+        type: sequelize.DataTypes.INTEGER,
+        primaryKey:true,
+        autoIncrement:true
+    },
+    chat:sequelize.DataTypes.STRING,
+    username:sequelize.DataTypes.STRING,
+    sid:sequelize.DataTypes.STRING
 });
 
 
@@ -23,5 +33,5 @@ db.sync().then(function() {
 });
 
 module.exports = {
-  ud
+  ud,chats
 };

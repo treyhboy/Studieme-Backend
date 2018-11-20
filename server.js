@@ -12,6 +12,9 @@ const passport = require("./Config/Passport/Passport.js");
 const cors = require("cors");
 const routes = require("./Src/Routes/Login");
 const flash = require("connect-flash");
+const chats = require("./Config/db").chats;
+const Cryptr = require('cryptr');
+
 
 app.use(cp("somesecret"));
 app.use(
@@ -45,6 +48,35 @@ io.on('connection', (socket) => {
     socket.on('some',(data) => {
         console.log(data);
         io.emit('RECEIVE_MESSAGE', data)
+    })
+    socket.on('new_message', (data) => {
+            chats.create({
+                chat:data.v,
+                sid:socket.id,
+                username:data.User
+            }).then(function () {
+
+                let sen = {chat:data.v,username:data.User}
+                io.emit('recv_message', sen)
+            }).catch(function(err)
+            {
+                throw err;
+            });
+
+
+    })
+    socket.on('name', (data) => {
+        chats.findOne({where:{username:data.User}}).then(function (dab) {
+            if(dab) {
+                chats.update({sid:socket.id},{where:{username:data.User}}).then(function () {
+                    console.log('success');
+
+                })
+                chats.findAll().then(function (chat) {
+                    io.emit('getname', chat);
+                })
+            }
+        })
     })
 });
 

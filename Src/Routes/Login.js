@@ -6,13 +6,6 @@ const request = require('request');
 const ud = require("../../Config/db").ud;
 const jwt = require("jsonwebtoken");
 
-// router.post("/signup", passport.authenticate("local-signup"), function(req, res) {
-//   res.send({ token: createToken(req.user) });
-// });
-// router.post("/login", function(req, res) {
-//     var token = res.token;
-//   // res.send({ token: createToken(req.user) });
-// });
 router.post("/data", function(req, res) {
     var t = jwt.verify(req.token, 'mysecretkey');
     request.get(
