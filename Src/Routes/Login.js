@@ -33,10 +33,19 @@ router.post("/data", function(req, res) {
 router.post("/api", function(req, res) {
     console.log("req data")
     var k = JSON.stringify(req.body.data);
-    console.log(k)
+    var L = JSON.stringify(req.body.Lidata)
+    let g = req.body.Gre
+    console.log("GREE")
+    console.log(req.body)
+    console.log(req.body.Gre)
+    console.log("other")
+    console.log(k + L)
+
+
     request.post({
             url: 'http://127.0.0.1:5000/data',
-            body:{data: k},
+            body:{data: k + L,gre:g
+            },
             json: true
         },
         function (error, response, body) {
@@ -48,14 +57,23 @@ router.post("/verify", function(req, res) {
     var decoded = jwt.verify(req.body.token, 'mysecretkey');
     console.log(req.body)
     console.log(decoded.name)
-    if(decoded)
-    {
-        res.send({status:true,name:decoded.name,username:decoded.username})
-    }
-    else
-    {
-        res.send({status:false})
-    }
+    request.get(
+        `https://api.linkedin.com/v1/people/~:(first-name,last-name,public-profile-url,location,headline,picture-url,positions,summary,num-connections,phonetic-first-name,industry,current-share,site-standard-profile-request,specialties,email-address)?format=json`,
+        {   headers: {
+            'Authorization': `Bearer ${decoded.sub}`
+        }},
+        function (error, response, body) {
+            console.log(body);
+                res.send({status:true,name:decoded.name,username:decoded.username,data:JSON.parse(body)})
+        })
+    // if(decoded)
+    // {
+
+    // }
+    // else
+    // {
+    //     res.send({status:false})
+    // }
 })
 router.post("/login", function(req, res) {
         request.post(
@@ -79,7 +97,11 @@ router.post("/login", function(req, res) {
                             .findOne({ where: { username: email } })
                             .then(function(user) {
                                 if (user) {
-                                    res.send({status:true,message:"user exist",token:createToken(user,name),data:JSON.parse(body),name})
+                                    ud.update({token:k.access_token},{where:{username:email}}).then(function () {
+                                        // console.log(user.dataValues);
+                                        res.send({status:true,message:"user exist",token:createToken({username:email,token:k.access_token,expire:k.expires_in},name),data:JSON.parse(body),name})
+                                    })
+
                                 } else {
                                     ud
                                         .create({
