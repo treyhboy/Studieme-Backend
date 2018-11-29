@@ -45,10 +45,10 @@ app.use("/", routes);
 io.on('connection', (socket) => {
     console.log("New client connected");
     console.log(socket.id);
-    socket.on('some',(data) => {
-        console.log(data);
-        io.emit('RECEIVE_MESSAGE', data)
-    })
+    // socket.on('some',(data) => {
+    //     console.log(data);
+    //     io.emit('RECEIVE_MESSAGE', data)
+    // })
     socket.on('new_message', (data) => {
             chats.create({
                 chat:data.v,
