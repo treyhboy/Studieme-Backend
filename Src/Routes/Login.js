@@ -53,6 +53,33 @@ router.post("/api", function(req, res) {
             res.send({success:true,data:body})
         })
 })
+router.post("/api2", function(req, res) {
+    // console.log("req data")
+    // var k = JSON.stringify(req.body.subs);
+    var k = req.body.subs
+    // var L = JSON.stringify(req.body.college)
+    var L = req.body.college
+    // let g = req.body.Gre
+    // console.log("GREE")
+    // console.log(req.body)
+    // console.log(req.body.Gre)
+    // console.log("other")
+    console.log(k)
+    console.log(L)
+
+
+
+    request.post({
+            url: 'http://127.0.0.1:5000/college',
+            body:{subs: k,college:L
+            },
+            json: true
+        },
+        function (error, response, body) {
+            console.log(body);
+            res.send(body)
+        })
+})
 router.post("/verify", function(req, res) {
     var decoded = jwt.verify(req.body.token, 'mysecretkey');
     console.log(req.body)
