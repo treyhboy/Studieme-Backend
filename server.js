@@ -11,6 +11,10 @@ const cors = require("cors");
 const routes = require("./Src/Routes/Login");
 const flash = require("connect-flash");
 
+//addedmy****
+const upload = require("express-fileupload");
+//****
+
 app.use(cp("somesecret"));
 app.use(
   session({
@@ -19,6 +23,11 @@ app.use(
 );
 
 app.use(cors());
+
+//addedmy****
+app.use(upload());
+//*****
+
 app.use(function(request, response, next) {
     response.header("Access-Control-Allow-Origin", "*");
     response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -41,3 +50,5 @@ app.use("/", routes);
 server.listen(1234, function () {
   console.log("Server started on http://localhost:1234");
 });
+
+

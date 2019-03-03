@@ -1,10 +1,12 @@
 const express = require("express");
 var router = express.Router();
 const createToken = require("../../Utils/Token.js");
-// const passport = require("../../Config/Passport/Passport.js");
 const request = require('request');
 const ud = require("../../Config/db").ud;
 const jwt = require("jsonwebtoken");
+
+const extract = require("pdf-text-extract");
+const path = require("path");
 
 router.post("/data", function(req, res) {
     var t = jwt.verify(req.token, 'mysecretkey');
@@ -31,34 +33,84 @@ router.post("/data", function(req, res) {
     );
 });
 router.post("/api", function(req, res) {
-    console.log("req data")
-    var k = JSON.stringify(req.body.data);
+    console.log("In API 1")
+    let textData="";
+
+    // if (req.files) {
+    //     let file = req.files.file;
+    //     let filename = req.files.file.name;
+    //     file.mv(path.join(__dirname, "upload/" + filename), err => {
+    //         if (err) {
+    //             console.log("err", err);
+    //             // res.send("error occured", err);
+    //         } else {
+    //             console.log("Done!");
+    //             console.log("file", file);
+    //             console.log("filename", filename);
+    //             let filePath = path.join(__dirname, "upload/" + filename);
+    //             extract(filePath, { splitPages: false }, function(err, text) {
+    //                 if (err) {
+    //                     console.dir(err);
+    //                     return;
+    //                 }
+    //                 textData = text;
+    //             });
+    //         }
+    //     });
+    // }
+
+    var k = JSON.stringify(textData);
+    var p = JSON.stringify(req.body.catagory);
     var L = JSON.stringify(req.body.Lidata)
     let g = req.body.Gre
-    console.log("GREE")
+    console.log("Mode")
+    console.log(req.body.Mode)
     console.log(req.body)
     console.log(req.body.Gre)
     console.log("other")
     console.log(k + L)
 
-
-    request.post({
-            url: 'http://127.0.0.1:5000/data',
-            body:{data: k + L,gre:g
+    if(req.body.Mode==="M Tech") {
+        request.post({
+                url: 'http://127.0.0.1:1080/gate',
+                body: {
+                    data: k + L, gate: g,catagory:p
+                },
+                json: true
             },
-            json: true
-        },
-        function (error, response, body) {
-            console.log(body);
-            res.send({success:true,data:body})
-        })
+            function (error, response, body) {console.log("call 1------")
+
+                res.send({success: true, data: body,})
+            })
+    }
+    else {
+        request.post({
+                url: 'http://127.0.0.1:1080/data',
+                body: {
+                    data: k + L, gre: g,catagory:""
+                },
+                json: true
+            },
+            function (error, response, body) {
+                console.log("call 2------")
+                console.log(body);
+                res.send({success: true, data: body,})
+            })
+    }
+
 })
+
+
+
+
 router.post("/api2", function(req, res) {
-    // console.log("req data")
+    console.log("In API 2")
     // var k = JSON.stringify(req.body.subs);
     var k = req.body.subs
     // var L = JSON.stringify(req.body.college)
     var L = req.body.college
+    var Mode = req.body.Mode
+    console.log("Mode is ",Mode)
     // let g = req.body.Gre
     // console.log("GREE")
     // console.log(req.body)
@@ -67,11 +119,9 @@ router.post("/api2", function(req, res) {
     console.log(k)
     console.log(L)
 
-
-
     request.post({
-            url: 'http://127.0.0.1:5000/college',
-            body:{subs: k,college:L
+            url: 'http://127.0.0.1:1080/college',
+            body:{subs: k,college:L,Mode:Mode
             },
             json: true
         },
@@ -93,20 +143,14 @@ router.post("/verify", function(req, res) {
             console.log(body);
                 res.send({status:true,name:decoded.name,username:decoded.username,data:JSON.parse(body)})
         })
-    // if(decoded)
-    // {
-
-    // }
-    // else
-    // {
-    //     res.send({status:false})
-    // }
 })
 router.post("/login", function(req, res) {
+    console.log("in login")
         request.post(
-            `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&code=${req.body.d}&redirect_uri=http://localhost:3000/linkedin&client_id=81k5i16hicsnq3&client_secret=GC3LNUuTqXoaqlHD`,
+            `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&code=${req.body.code}&redirect_uri=http://localhost:3000/linkedin&client_id=81fr867rjlh6t5&client_secret=6NJXOVCIapuTDOUm`,
             function (error, response, body) {
-                console.log(JSON.parse(body).access_token)
+                console.log(body)
+                console.log("Token here",JSON.parse(body).access_token)
                 var k = JSON.parse(body);
                 request.get(
                     `https://api.linkedin.com/v1/people/~:(first-name,last-name,public-profile-url,location,headline,picture-url,positions,summary,num-connections,phonetic-first-name,industry,current-share,site-standard-profile-request,specialties,email-address)?format=json`,
@@ -155,3 +199,9 @@ router.post("/login", function(req, res) {
 });
 
 module.exports = router;
+
+
+
+
+
+
