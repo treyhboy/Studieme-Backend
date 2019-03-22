@@ -11,9 +11,8 @@ const cors = require("cors");
 const routes = require("./Src/Routes/Login");
 const flash = require("connect-flash");
 
-//addedmy****
 const upload = require("express-fileupload");
-//****
+
 
 app.use(cp("somesecret"));
 app.use(
@@ -24,9 +23,8 @@ app.use(
 
 app.use(cors());
 
-//addedmy****
 app.use(upload());
-//*****
+
 
 app.use(function(request, response, next) {
     response.header("Access-Control-Allow-Origin", "*");
