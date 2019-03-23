@@ -27,6 +27,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pdf-text-extract": "^1.5.0",
+    "pg": "^7.9.0",
     "request": "^2.88.0",
     "sequelize": "^4.28.6",
     "socket.io": "^2.1.1",
