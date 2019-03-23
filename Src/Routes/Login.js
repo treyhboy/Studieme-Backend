@@ -5,8 +5,8 @@ const request = require('request');
 const ud = require("../../Config/db").ud;
 const jwt = require("jsonwebtoken");
 
-const extract = require("pdf-text-extract");
-const path = require("path");
+// const extract = require("pdf-text-extract");
+// const path = require("path");
 
 router.post("/data", function(req, res) {
     var t = jwt.verify(req.token, 'mysecretkey');
@@ -72,7 +72,7 @@ router.post("/api", function(req, res) {
 
     if(req.body.Mode==="M Tech") {
         request.post({
-                url: 'http://127.0.0.1:1080/gate',
+                url: 'https://studieme-flask.herokuapp.com/gate',
                 body: {
                     data: k + L, gate: g,catagory:p
                 },
@@ -85,7 +85,7 @@ router.post("/api", function(req, res) {
     }
     else {
         request.post({
-                url: 'http://127.0.0.1:1080/data',
+                url: 'https://studieme-flask.herokuapp.com/data',
                 body: {
                     data: k + L, gre: g,catagory:""
                 },
@@ -120,7 +120,7 @@ router.post("/api2", function(req, res) {
     console.log(L)
 
     request.post({
-            url: 'http://127.0.0.1:1080/college',
+            url: 'https://studieme-flask.herokuapp.com/college',
             body:{subs: k,college:L,Mode:Mode
             },
             json: true

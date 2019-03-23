@@ -45,8 +45,8 @@ app.use(flash());
 
 app.use("/", routes);
 
-server.listen(1234, function () {
-  console.log("Server started on http://localhost:1234");
+server.listen(process.env.PORT||1234, function () {
+  console.log("Server started on ",process.env.PORT||1234);
 });
 
 

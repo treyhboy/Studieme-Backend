@@ -1,12 +1,13 @@
 const sequelize = require("sequelize");
 
-const db = new sequelize({
-  host: "localhost",
-  username: "root",
-  database: "db",
-  password: "taruntrehan",
-  dialect: "mysql"
-});
+// const db = new sequelize({
+//   host: "localhost",
+//   username: "root",
+//   database: "db",
+//   password: "taruntrehan",
+//   dialect: "mysql"
+// });
+const db = new sequelize (process.env.DATABASE_URL);
 
 const ud = db.define("testooodb", {
     username: {
