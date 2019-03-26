@@ -147,7 +147,7 @@ router.post("/verify", function(req, res) {
 router.post("/login", function(req, res) {
     console.log("in login")
         request.post(
-            `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&code=${req.body.code}&redirect_uri=http://localhost:3000/linkedin&client_id=81fr867rjlh6t5&client_secret=6NJXOVCIapuTDOUm`,
+            `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&code=${req.body.code}&redirect_uri=https://studieme.herokuapp.com/linkedin&client_id=81fr867rjlh6t5&client_secret=6NJXOVCIapuTDOUm`,
             function (error, response, body) {
                 console.log(body)
                 console.log("Token here",JSON.parse(body).access_token)
