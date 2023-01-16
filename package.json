@@ -21,7 +21,7 @@
     "express-jwt-permissions": "^1.0.0",
     "express-session": "^1.15.6",
     "http": "0.0.0",
-    "jsonwebtoken": "^8.1.0",
+    "jsonwebtoken": "^9.0.0",
     "md5": "^2.2.1",
     "mysql2": "^1.6.4",
     "passport": "^0.4.0",
